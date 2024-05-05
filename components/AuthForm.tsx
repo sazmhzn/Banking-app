@@ -21,12 +21,18 @@ import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signIn, signUp } from "@/lib/actions/user.actions";
 
-const formSchema = z.object({
-  email: z.string().email(),
-});
+// const formSchema = z.object({
+//   email: z.string().email(),
+// });
+
+
 
 const AuthForm = ({ type }: { type: string }) => {
+
+
+
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,32 +49,27 @@ const AuthForm = ({ type }: { type: string }) => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit = async ((data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-      //signup iwth appwrght & cereate a plaid link token
 
       if(type === 'sign-up') {
-        // const newUser = await signUp(data);
-        // setUser(newUser);
+        const newUser = await signUp(data);
+
+        setUser(newUser);
       }
 
-      if(type === 'sing-in') {
-        // const response = await signIn({
-        //   email: data.email,
-        //   password: data.password
-        // });
+      if(type === 'sign-in') {
+        const response = await signIn({
+          email: data.email,
+          password: data.password
+        });
 
-        // if(response) router.push('/')
+        if(response) router.push('/')
       }
 
-
-
-          // Reached 2:30
+          // Reached 3:06:20
           //need to review the async function created
-
-
-
 
     setIsLoading(false);
     } catch (error) {
@@ -78,7 +79,7 @@ const AuthForm = ({ type }: { type: string }) => {
     }
 
     
-  })
+  }
 
   return (
     <section className="auth-form">
@@ -206,17 +207,17 @@ const AuthForm = ({ type }: { type: string }) => {
 
           <footer className="flex justify-center gap-1 p-2">
             <p className="text-14 font-normal text-gray-600">
-              {" "}
+    
               {type === "sign-in"
                 ? "Don't have an account?"
-                : "Already have an account?"}{" "}
+                : "Already have an account?"}
             </p>
             <Link
               className="form-link"
               href={type === "sign-in" ? "/sign-up" : "/sign-in"}
             >
-              {" "}
-              {type === "sign-in" ? "Sign up" : "Sign in"}{" "}
+            
+              {type === "sign-in" ? "Sign up" : "Sign in"}
             </Link>
           </footer>
         </>
