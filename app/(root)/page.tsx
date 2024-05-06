@@ -1,12 +1,17 @@
 import React from 'react'
-import HeaderBox from '../../components/HeaderBox';
-import TotalBalanceBox from '../../components/TotalBalanceBox';
-import RightSidebar from '../../components/RightSidebar';
+import HeaderBox from '@/components/HeaderBox';
+import TotalBalanceBox from '@/components/TotalBalanceBox';
+import RightSidebar from '@/components/RightSidebar';
+import { getLoggedInUser } from '@/lib/actions/user.actions';
 
-const Home = () => {
+const Home = async () => {
 
-  const loggedIn = {firstName: 'Wonjala', lastName: 'Joshi', email: 'wonju2joshi@gmail.com'};
+  // const loggedIn = {firstName: 'Wonjala', lastName: 'Joshi', email: 'wonju2joshi@gmail.com'};
 
+  const loggedIn = await getLoggedInUser();
+
+  console.log(loggedIn || "no user found");
+//what will this loggedIn return?
   return (
     <section className='home'>
       <div className='home-content'>
@@ -14,7 +19,7 @@ const Home = () => {
           <HeaderBox 
             type="greeting"
             title="Welcome"
-            user={loggedIn?.firstName || 'Guest'}
+            user={loggedIn?.name || 'Guest'}
             subtext="Access and manage your accoutno and transactions effeciently"
           />
 
@@ -30,7 +35,7 @@ const Home = () => {
       <RightSidebar 
       user={loggedIn} 
       transactions={[]}
-      banks={[{ currentBalance: 123.50 }, { currentBalance: 123.50   }]}
+      banks={[{currentBalance: 123.50}, {currentBalance: 123.50}]}
       />
     </section>
   )

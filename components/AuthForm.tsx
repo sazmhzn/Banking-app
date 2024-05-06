@@ -10,12 +10,6 @@ import { useForm } from "react-hook-form";
 import { Button } from "../components/ui/button";
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "../components/ui/form";
 import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
@@ -102,7 +96,7 @@ const AuthForm = ({ type }: { type: string }) => {
           </h1>
           <p className="text-16 font-normal text-gray-600">
             {user
-              ? "Link your accoutn to get started"
+              ? "Link your account to get started"
               : "Please enter your details"}
           </p>
         </div>
@@ -124,7 +118,7 @@ const AuthForm = ({ type }: { type: string }) => {
                     />
                     <CustomInput
                       control={form.control}
-                      name="lasttName"
+                      name="lastName"
                       label="Last name"
                       placeholder="Enter your last name"
                     />
@@ -195,11 +189,9 @@ const AuthForm = ({ type }: { type: string }) => {
                       <Loader2 size={20} className="animate-spin" /> &nbsp;
                       Loading...
                     </>
-                  ) : type === "sign-in" ? (
-                    "Sign In"
-                  ) : (
-                    "Sign Up"
-                  )}
+                  ) : type === "sign-in" ? 
+                    "Sign In" :
+                    "Sign Up" }
                 </Button>
               </div>
             </form>
