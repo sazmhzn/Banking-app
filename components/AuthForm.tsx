@@ -8,25 +8,19 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "../components/ui/button";
-import {
-  Form,
-} from "../components/ui/form";
+import { Form } from "../components/ui/form";
 import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
+import PlaidLink from "./PlaidLink";
 
 // const formSchema = z.object({
 //   email: z.string().email(),
 // });
 
-
-
 const AuthForm = ({ type }: { type: string }) => {
-
-
-
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,34 +40,31 @@ const AuthForm = ({ type }: { type: string }) => {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-
-      if(type === 'sign-up') {
+      if (type === "sign-up") {
         const newUser = await signUp(data);
 
         setUser(newUser);
       }
 
-      if(type === 'sign-in') {
+      if (type === "sign-in") {
         const response = await signIn({
           email: data.email,
-          password: data.password
+          password: data.password,
         });
 
-        if(response) router.push('/')
+        if (response) router.push("/");
       }
 
-          // Reached 3:06:20
-          //need to review the async function created
+      // Reached 3:06:20
+      //need to review the async function created
 
-    setIsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
-
-    
-  }
+  };
 
   return (
     <section className="auth-form">
@@ -101,9 +92,11 @@ const AuthForm = ({ type }: { type: string }) => {
           </p>
         </div>
       </header>
-      {user ? (
-        <div className="flex flex-col gap-4 ">{/* PLAIDLINK */}</div>
-      ) : (
+      {/* {user ? ( */}
+        <div className="flex flex-col gap-4 ">
+          <PlaidLink  user={user} variant="primary" />
+        </div>
+      {/* ) : ( */}
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -189,9 +182,11 @@ const AuthForm = ({ type }: { type: string }) => {
                       <Loader2 size={20} className="animate-spin" /> &nbsp;
                       Loading...
                     </>
-                  ) : type === "sign-in" ? 
-                    "Sign In" :
-                    "Sign Up" }
+                  ) : type === "sign-in" ? (
+                    "Sign In"
+                  ) : (
+                    "Sign Up"
+                  )}
                 </Button>
               </div>
             </form>
@@ -199,7 +194,6 @@ const AuthForm = ({ type }: { type: string }) => {
 
           <footer className="flex justify-center gap-1 p-2">
             <p className="text-14 font-normal text-gray-600">
-    
               {type === "sign-in"
                 ? "Don't have an account?"
                 : "Already have an account?"}
@@ -208,12 +202,11 @@ const AuthForm = ({ type }: { type: string }) => {
               className="form-link"
               href={type === "sign-in" ? "/sign-up" : "/sign-in"}
             >
-            
               {type === "sign-in" ? "Sign up" : "Sign in"}
             </Link>
           </footer>
         </>
-      )}
+      {/* )} */}
     </section>
   );
 };
